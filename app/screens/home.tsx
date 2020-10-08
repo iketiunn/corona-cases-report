@@ -121,9 +121,12 @@ export default function Home() {
           <Dialog.Title>Alert</Dialog.Title>
           <Dialog.Content>
             <Paragraph>
-              The temperature cannot be less than 30 °C or higher than 50 °C,
-              for Fahrenheit degree, the temperature cannot be less than 86 °F
-              or higher than 122 °F
+              For Celsius degree, The temperature cannot be less than 30 °C or
+              higher than 50 °C.
+            </Paragraph>
+            <Paragraph>
+              For Fahrenheit degree, the temperature cannot be less than 86 °F
+              or higher than 122 °F.
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
