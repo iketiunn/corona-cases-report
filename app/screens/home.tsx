@@ -1,6 +1,6 @@
 // The app only contains a single screen, which contains
 //
-// - A header bar, the title should be "Topcoder Body Temperature Report".
+// [x] A header bar, the title should be "Topcoder Body Temperature Report".
 // - A form that includes the following input controls.
 // - A text field for inputting the name.
 // - A text field for inputting the body temperature,
@@ -20,6 +20,7 @@
 
 import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
+import { Appbar } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
 import { decrement, increment, selectCount } from "../store/counterReducer";
 
