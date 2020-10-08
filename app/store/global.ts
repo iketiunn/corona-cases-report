@@ -34,8 +34,10 @@ const globalSlice = createSlice({
       state.temp = action.payload;
     },
     toggleTempScale: (state) => {
-      state.temp =
-        state.tempScale === "celsius" ? cTof(state.temp) : fToc(state.temp);
+      if (state.temp !== "") {
+        state.temp =
+          state.tempScale === "celsius" ? cTof(state.temp) : fToc(state.temp);
+      }
       state.tempScale =
         state.tempScale === "celsius" ? "fahrenheit" : "celsius";
     },

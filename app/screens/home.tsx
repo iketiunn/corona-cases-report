@@ -141,7 +141,6 @@ export default function Home() {
 
         {data.map((d) => {
           const t = tempScale === "celsius" ? d.temp : cTof(d.temp);
-          console.log(t);
           const ts = tempScale === "celsius" ? "°C" : "°F";
           return (
             <DataTable.Row key={d.name + d.date}>
