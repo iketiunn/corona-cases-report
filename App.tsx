@@ -12,11 +12,9 @@ export default function App() {
       <Appbar.Header>
         <Appbar.Content title="Topcoder Body Temperature Report"></Appbar.Content>
       </Appbar.Header>
-      <View style={styles.container}>
-        <StatusBar style="auto" />
-        {/* Place your screen */}
-        <Home />
-      </View>
+      <StatusBar style="auto" />
+      {/* Place your screen */}
+      <Home />
     </Provider>
   );
 }

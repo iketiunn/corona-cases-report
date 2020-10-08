@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./counterReducer";
+import globalReducer from "./global";
 
 const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    global: globalReducer,
   },
   devTools: true,
 });
