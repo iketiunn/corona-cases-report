@@ -13,14 +13,33 @@
 //   - Body temperature
 //   - Reported time
 // [x] Each record is in a row.
-// - There should also be a floating button to switch between Celsius and Fahrenheit.
+// [x] There should also be a floating button to switch between Celsius and Fahrenheit.
 //   All the temperatures (including the values in the table and input text field)
 //   should be converted to the corresponding temperature unit.
 // [x] If the temperature format in the table should be like 37 °C or 100 °F
 
+// [x] You should use Redux to manage the state.
+// [ ] The temperature cannot be less than 30 °C or higher than 50 °C
+//     for Fahrenheit degree, the temperature cannot be less than 86 °F or higher than 122 °F.
+//     If the user input temperature is beyond the range,
+//     show an error popup with meaningful message text.
+// [x] The default temperature unit is Celsius.
+// [x] All the state just needs to be stored in memory,
+//     so it is expected that the records are gone if we kill the app and reopen it.
+// [x] The screen should be responsive to match different screen sizes of devices.
+// [x] The app should be able to run on both iOS and Android.
+
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { TextInput, Button, DataTable, FAB } from "react-native-paper";
+import {
+  TextInput,
+  Button,
+  DataTable,
+  FAB,
+  Paragraph,
+  Dialog,
+  Portal,
+} from "react-native-paper";
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -32,8 +51,12 @@ import {
   addDataRow,
   selectTempScale,
   DataRow,
+  toggleTempScale,
+  selectIsDialogVisible,
+  showDialog,
+  hideDialog,
 } from "../store/global";
-import { cTof } from "../lib";
+import { cTof, validateC, validateF } from "../lib";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -42,9 +65,12 @@ export default function Home() {
   const temp = useSelector(selectTemp);
   const dispatchUpdateTemp = (t: string) => dispatch(updateTemp(t));
   const tempScale = useSelector(selectTempScale);
-
+  const dispatchToggleTempScale = () => dispatch(toggleTempScale());
   const data = useSelector(selectData);
   const dispatchAddDataRow = (d: DataRow) => dispatch(addDataRow(d));
+  const isDialogVisible = useSelector(selectIsDialogVisible);
+  const dispatchShowDialog = () => dispatch(showDialog());
+  const dispatchHideDialog = () => dispatch(hideDialog());
 
   return (
     <View style={s.container}>
@@ -74,15 +100,38 @@ export default function Home() {
         mode="contained"
         style={s.button}
         onPress={() => {
-          dispatchAddDataRow({
-            name,
-            temp,
-            date: dayjs().format("YYYY-MM-DD HH:mm:ss"),
-          });
+          if (name && temp) {
+            const validate = tempScale === "celsius" ? validateC : validateF;
+            if (validate(temp)) {
+              dispatchAddDataRow({
+                name,
+                temp,
+                date: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+              });
+            } else {
+              console.log("show");
+              dispatchShowDialog();
+            }
+          }
         }}
       >
         Submit
       </Button>
+      <Portal>
+        <Dialog visible={isDialogVisible} onDismiss={dispatchHideDialog}>
+          <Dialog.Title>Alert</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>
+              The temperature cannot be less than 30 °C or higher than 50 °C,
+              for Fahrenheit degree, the temperature cannot be less than 86 °F
+              or higher than 122 °F
+            </Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={dispatchHideDialog}>OK</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
 
       <DataTable>
         <DataTable.Header>
@@ -97,16 +146,22 @@ export default function Home() {
           return (
             <DataTable.Row key={d.name + d.date}>
               <DataTable.Cell>{d.name}</DataTable.Cell>
-              <DataTable.Cell>
-                {parseFloat(d.temp).toFixed(2) + ts}
-              </DataTable.Cell>
+              <DataTable.Cell>{parseFloat(t).toFixed(2) + ts}</DataTable.Cell>
               <DataTable.Cell>{d.date}</DataTable.Cell>
             </DataTable.Row>
           );
         })}
       </DataTable>
-      {/* <FAB style={s.fab} small icon="temperature-celsius" /> */}
-      <FAB style={s.fab} small icon="temperature-fahrenheit" />
+      <FAB
+        style={s.fab}
+        small
+        onPress={dispatchToggleTempScale}
+        icon={
+          tempScale === "celsius"
+            ? "temperature-fahrenheit"
+            : "temperature-celsius"
+        }
+      />
     </View>
   );
 }

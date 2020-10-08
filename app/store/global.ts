@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { TempScale } from "../interface";
-import { fToc } from "../lib";
+import { cTof, fToc } from "../lib";
 
 export interface DataRow {
   name: string;
@@ -14,11 +14,13 @@ const initialState: {
   temp: string;
   tempScale: TempScale;
   data: DataRow[];
+  isDialogVisible: boolean;
 } = {
   name: "",
   temp: "", // All in celsius
   tempScale: "celsius",
   data: [],
+  isDialogVisible: false,
 };
 
 const globalSlice = createSlice({
@@ -32,6 +34,8 @@ const globalSlice = createSlice({
       state.temp = action.payload;
     },
     toggleTempScale: (state) => {
+      state.temp =
+        state.tempScale === "celsius" ? cTof(state.temp) : fToc(state.temp);
       state.tempScale =
         state.tempScale === "celsius" ? "fahrenheit" : "celsius";
     },
@@ -47,6 +51,12 @@ const globalSlice = createSlice({
     clearData: (state) => {
       state.data = [];
     },
+    showDialog: (state) => {
+      state.isDialogVisible = true;
+    },
+    hideDialog: (state) => {
+      state.isDialogVisible = false;
+    },
   },
 });
 
@@ -54,6 +64,8 @@ export const selectName = (state: RootState) => state.global.name;
 export const selectTempScale = (state: RootState) => state.global.tempScale;
 export const selectTemp = (state: RootState) => state.global.temp;
 export const selectData = (state: RootState) => state.global.data;
+export const selectIsDialogVisible = (state: RootState) =>
+  state.global.isDialogVisible;
 
 export const {
   updateName,
@@ -61,6 +73,8 @@ export const {
   toggleTempScale,
   addDataRow,
   clearData,
+  showDialog,
+  hideDialog,
 } = globalSlice.actions;
 
 export default globalSlice.reducer;
