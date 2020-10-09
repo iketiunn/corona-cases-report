@@ -51,6 +51,7 @@ const globalSlice = createSlice({
       state.updatedAt = dayjs().format('YYYY-MM-DD HH:mm:ss')
     },
     updateError: (state, action: PayloadAction<string>) => {
+      state.summary = state.summary
       state.error = action.payload
       state.isLoading = false
       state.updatedAt = dayjs().format('YYYY-MM-DD HH:mm:ss')
@@ -64,13 +65,36 @@ export const selectState = (state: RootState) => state.global;
 export const fetchSummaryAsync = (dispatch: AppDispatch) => {
   dispatch(globalSlice.actions.updateSummary(undefined))
   dispatch(globalSlice.actions.updateIsLoading())
-  // Start fetch
-  fetch('https://api.covid19api.com/summary')
+  // Start fetch, timeout 10s
+  Promise.race([
+    fetch('https://api.covid19api.com/summary')
     .then(res => res.json())
     .then(sum => {
-      dispatch(globalSlice.actions.updateSummary(sum))
+      // sum = {
+      //   "Date": "0001-01-01T00:00:00Z",
+      //   "Global":  {
+      //     "NewConfirmed": 0,
+      //     "NewDeaths": 0,
+      //     "NewRecovered": 0,
+      //     "TotalConfirmed": 0,
+      //     "TotalDeaths": 0,
+      //     "TotalRecovered": 0,
+      //   },
+      //   "Message": "Caching in progress",
+      // }
+      if (sum.Message) {
+        // Maybe "Caching in progress"
+        dispatch(globalSlice.actions.updateError(sum.Message + ', pull to reload...'))
+      } else {
+        dispatch(globalSlice.actions.updateSummary(sum))
+      }
     })
-    .catch(err =>  console.error(err))
+    .catch(err =>  {
+      console.error(err)
+      dispatch(globalSlice.actions.updateError(err.message))
+    }),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('Request timeout')), 10000))
+  ])
 }
 
 export default globalSlice.reducer;

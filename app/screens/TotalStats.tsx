@@ -26,6 +26,8 @@ export default function TotalStatsScreen() {
       <ScrollView
         refreshControl={
           <RefreshControl
+            enabled={true}
+            progressViewOffset={-100}
             refreshing={state.isLoading}
             onRefresh={() => {
               dispatch(fetchSummaryAsync);
@@ -38,9 +40,32 @@ export default function TotalStatsScreen() {
             <ActivityIndicator size="large" />
           </View>
         )}
-        {!state.isLoading && !state.summary && (
+        {!state.isLoading && Boolean(state.error) && (
           <View style={s.container}>
-            <Text> No Data! </Text>
+            <Text
+              style={{
+                fontSize: 24,
+                paddingVertical: 128,
+                paddingHorizontal: 48,
+              }}
+            >
+              {" "}
+              {state.error}{" "}
+            </Text>
+          </View>
+        )}
+        {!state.isLoading && !state.summary && !state.error && (
+          <View style={s.container}>
+            <Text
+              style={{
+                fontSize: 24,
+                paddingVertical: 128,
+                paddingHorizontal: 48,
+              }}
+            >
+              {" "}
+              No Data!{" "}
+            </Text>
           </View>
         )}
         {state.summary && <TotalStatsCard state={state} />}
@@ -51,9 +76,8 @@ export default function TotalStatsScreen() {
 
 const s = StyleSheet.create({
   container: {
-    margin: "auto",
     justifyContent: "center",
-    textAlign: "center",
+    alignItems: "center",
   },
   horizontal: {
     flexDirection: "row",
