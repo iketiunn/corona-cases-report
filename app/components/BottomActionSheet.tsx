@@ -1,14 +1,16 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableHighlight } from "react-native";
 import { IconButton, List, Portal, useTheme } from "react-native-paper";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import BottomSheet from "reanimated-bottom-sheet";
 import { formatNumber } from "../lib";
-import { selectState } from "../store/global";
+import { selectState, updateIsBackdropVisible } from "../store/global";
 // @ts-ignore:
 import Flag from "react-native-flags";
 
 const BottomActionSheet = (props: React.HTMLProps<BottomSheet>, ref: any) => {
+  const dispatch = useDispatch();
+  const dispatchBackdropOff = () => dispatch(updateIsBackdropVisible(false));
   const state = useSelector(selectState);
   const theme = useTheme();
   const c = state.selectedCountry;
@@ -38,7 +40,7 @@ const BottomActionSheet = (props: React.HTMLProps<BottomSheet>, ref: any) => {
             color="white"
             size={22}
             onPress={() => {
-              console.log("xx");
+              dispatchBackdropOff();
               ref.current.snapTo(0);
             }}
           />
@@ -93,6 +95,17 @@ const BottomActionSheet = (props: React.HTMLProps<BottomSheet>, ref: any) => {
 
   return (
     <Portal>
+      {state.isBackdropVisible && (
+        <TouchableHighlight
+          onPress={() => {
+            dispatchBackdropOff();
+            ref.current.snapTo(0);
+          }}
+          style={{ flex: 1, backgroundColor: "black", opacity: 0.8 }}
+        >
+          <></>
+        </TouchableHighlight>
+      )}
       <BottomSheet
         {...props}
         ref={ref}

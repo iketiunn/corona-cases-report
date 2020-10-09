@@ -33,10 +33,12 @@ const initialState: {
   isLoading: boolean;
   error: string
   selectedCountry?: Country 
+  isBackdropVisible: boolean
 } = {
   isLoading: false,
   updatedAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
   error: '',
+  isBackdropVisible: false
 };
 
 const globalSlice = createSlice({
@@ -59,13 +61,16 @@ const globalSlice = createSlice({
     },
     updateSelectedCountry: (state, action: PayloadAction<Country>) => {
       state.selectedCountry = action.payload
+    },
+    updateIsBackdropVisible: (state, action: PayloadAction<boolean>) => {
+      state.isBackdropVisible = action.payload
     }
   },
 });
 export type State = typeof initialState
 
 export const selectState = (state: RootState) => state.global;
-export const { updateSelectedCountry } = globalSlice.actions
+export const { updateSelectedCountry, updateIsBackdropVisible } = globalSlice.actions
 
 export const fetchSummaryAsync = (dispatch: AppDispatch) => {
   dispatch(globalSlice.actions.updateSummary(undefined))

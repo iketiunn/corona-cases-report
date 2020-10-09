@@ -3,7 +3,12 @@ import { View, StyleSheet } from "react-native";
 import { Avatar, Card, Text, IconButton } from "react-native-paper";
 import BottomSheet from "reanimated-bottom-sheet";
 import { formatNumber } from "../lib";
-import { Country, selectState, updateSelectedCountry } from "../store/global";
+import {
+  Country,
+  selectState,
+  updateIsBackdropVisible,
+  updateSelectedCountry,
+} from "../store/global";
 // @ts-ignore:
 import Flag from "react-native-flags";
 import BottomActionSheet from "./BottomActionSheet";
@@ -50,6 +55,7 @@ export default function TotalStatsCard() {
   const dispatch = useDispatch();
   const dispatchSelectCountry = (c: Country) =>
     dispatch(updateSelectedCountry(c));
+  const dispatchBackdrop = () => dispatch(updateIsBackdropVisible(true));
   const state = useSelector(selectState);
   if (!state.summary) return <></>;
 
@@ -68,6 +74,7 @@ export default function TotalStatsCard() {
             key={c.CountryCode}
             onPress={() => {
               dispatchSelectCountry(c);
+              dispatchBackdrop();
               sheetRef?.current?.snapTo(1);
               console;
             }}
