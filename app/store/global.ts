@@ -1,82 +1,76 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from ".";
-import { TempScale } from "../interface";
-import { cTof, fToc } from "../lib";
+import dayjs from "dayjs";
+import { AppDispatch, RootState } from ".";
 
-export interface DataRow {
-  name: string;
-  temp: string;
-  date: string;
+interface Summary {
+  Global: Global;
+  Countries: Country[];
+}
+interface Country {
+  Country: string;
+  CountryCode: string;
+  Slug: string;
+  NewConfirmed: number;
+  TotalConfirmed: number;
+  NewDeaths: number;
+  TotalDeaths: number;
+  NewRecovered: number;
+  TotalRecovered: number;
+  Date: string;
+}
+interface Global {
+  NewConfirmed: number;
+  TotalConfirmed: number;
+  NewDeaths: number;
+  TotalDeaths: number;
+  NewRecovered: number;
+  TotalRecovered: number;
 }
 
 const initialState: {
-  name: string;
-  temp: string;
-  tempScale: TempScale;
-  data: DataRow[];
-  isDialogVisible: boolean;
+  summary?: Summary
+  updatedAt: string;
+  isLoading: boolean;
+  error: string
 } = {
-  name: "",
-  temp: "", // All in celsius
-  tempScale: "celsius",
-  data: [],
-  isDialogVisible: false,
+  isLoading: false,
+  updatedAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+  error: ''
 };
 
 const globalSlice = createSlice({
   name: "global",
   initialState,
   reducers: {
-    updateName: (state, action: PayloadAction<string>) => {
-      state.name = action.payload;
+    updateIsLoading: (state) => {
+      state.isLoading = true
     },
-    updateTemp: (state, action: PayloadAction<string>) => {
-      state.temp = action.payload;
+    updateSummary: (state, action: PayloadAction<Summary | undefined>) => {
+      state.summary = action.payload;
+      state.isLoading = false
+      state.updatedAt = dayjs().format('YYYY-MM-DD HH:mm:ss')
     },
-    toggleTempScale: (state) => {
-      if (state.temp !== "") {
-        state.temp =
-          state.tempScale === "celsius" ? cTof(state.temp) : fToc(state.temp);
-      }
-      state.tempScale =
-        state.tempScale === "celsius" ? "fahrenheit" : "celsius";
-    },
-    addDataRow: (state, action: PayloadAction<DataRow>) => {
-      action.payload.temp =
-        state.tempScale === "celsius"
-          ? action.payload.temp
-          : fToc(action.payload.temp);
-      state.data = [...state.data, action.payload];
-      state.name = "";
-      state.temp = "";
-    },
-    clearData: (state) => {
-      state.data = [];
-    },
-    showDialog: (state) => {
-      state.isDialogVisible = true;
-    },
-    hideDialog: (state) => {
-      state.isDialogVisible = false;
-    },
+    updateError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload
+      state.isLoading = false
+      state.updatedAt = dayjs().format('YYYY-MM-DD HH:mm:ss')
+    }
   },
 });
+export type State = typeof initialState
 
-export const selectName = (state: RootState) => state.global.name;
-export const selectTempScale = (state: RootState) => state.global.tempScale;
-export const selectTemp = (state: RootState) => state.global.temp;
-export const selectData = (state: RootState) => state.global.data;
-export const selectIsDialogVisible = (state: RootState) =>
-  state.global.isDialogVisible;
+export const selectState = (state: RootState) => state.global;
 
-export const {
-  updateName,
-  updateTemp,
-  toggleTempScale,
-  addDataRow,
-  clearData,
-  showDialog,
-  hideDialog,
-} = globalSlice.actions;
+export const fetchSummaryAsync = (dispatch: AppDispatch) => {
+  dispatch(globalSlice.actions.updateSummary(undefined))
+  dispatch(globalSlice.actions.updateIsLoading())
+  // Start fetch
+  fetch('https://api.covid19api.com/summary')
+    .then(res => res.json())
+    .then(sum => {
+      dispatch(globalSlice.actions.updateSummary(sum))
+    })
+    .catch(err =>  console.error(err))
+}
 
 export default globalSlice.reducer;
