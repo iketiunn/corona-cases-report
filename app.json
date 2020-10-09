@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "body-temp-report",
-    "slug": "body-temp-report",
+    "name": "corona-cases-report",
+    "slug": "corona-cases-report",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
