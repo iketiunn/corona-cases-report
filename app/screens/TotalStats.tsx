@@ -1,13 +1,12 @@
 import * as React from "react";
 import { View } from "react-native";
-import { Appbar, Text } from "react-native-paper";
+import { Text } from "react-native-paper";
+import HeaderNav from "../components/HeaderNav";
 
 export default function TotalStatsScreen() {
   return (
     <View>
-      <Appbar.Header>
-        <Appbar.Content title="Total Stats"></Appbar.Content>
-      </Appbar.Header>
+      <HeaderNav title="Total Stats" />
 
       <Text>TotalStatsScreen</Text>
     </View>

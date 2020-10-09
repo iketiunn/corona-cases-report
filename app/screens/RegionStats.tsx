@@ -1,13 +1,12 @@
 import * as React from "react";
 import { View } from "react-native";
-import { Appbar, Text } from "react-native-paper";
+import { Text } from "react-native-paper";
+import HeaderNav from "../components/HeaderNav";
 
 export default function RegionScreen() {
   return (
     <View>
-      <Appbar.Header>
-        <Appbar.Content title="Region Stats"></Appbar.Content>
-      </Appbar.Header>
+      <HeaderNav title="Region Stats" />
 
       <Text>Region Stats</Text>
     </View>

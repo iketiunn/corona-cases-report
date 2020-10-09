@@ -3,15 +3,15 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Provider } from "react-redux";
 import store from "./app/store";
-import { Appbar, Portal } from "react-native-paper";
-import Nav from "./app/components/Nav";
+import { Portal } from "react-native-paper";
+import BottomTabs from "./app/components/BottomTabs";
 
 export default function App() {
   return (
     <Provider store={store}>
       <Portal.Host>
         <StatusBar style="auto" />
-        <Nav />
+        <BottomTabs />
       </Portal.Host>
     </Provider>
   );
