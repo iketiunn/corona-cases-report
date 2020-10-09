@@ -1,10 +1,13 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Avatar, Card, Text, IconButton } from "react-native-paper";
+import BottomSheet from "reanimated-bottom-sheet";
 import { formatNumber } from "../lib";
-import { State } from "../store/global";
+import { Country, selectState, updateSelectedCountry } from "../store/global";
 // @ts-ignore:
 import Flag from "react-native-flags";
+import BottomActionSheet from "./BottomActionSheet";
+import { useSelector, useDispatch } from "react-redux";
 
 const totalColor = "#4ba9c8";
 const Clip = (props: any) => (
@@ -43,19 +46,33 @@ const Death = (props: any) => (
   />
 );
 
-interface Props {
-  state: State;
-}
-export default function TotalStatsCard({ state }: Props) {
-  if (!state.summary) return <View></View>;
+export default function TotalStatsCard() {
+  const dispatch = useDispatch();
+  const dispatchSelectCountry = (c: Country) =>
+    dispatch(updateSelectedCountry(c));
+  const state = useSelector(selectState);
+  if (!state.summary) return <></>;
 
-  const summary = state.summary;
+  const sheetRef = React.useRef<BottomSheet>(null);
+
+  const countries = state.summary.Countries.slice().sort(
+    (a, b) => b.TotalConfirmed - a.TotalConfirmed
+  );
 
   return (
     <View>
-      {summary.Countries.slice(0, 50).map((c) => {
+      {countries.slice(0, 50).map((c) => {
         return (
-          <Card style={s.card} key={c.CountryCode}>
+          <Card
+            style={s.card}
+            key={c.CountryCode}
+            onPress={() => {
+              dispatchSelectCountry(c);
+              console.log("shot");
+              sheetRef?.current?.snapTo(1);
+              console;
+            }}
+          >
             <Card.Title
               title={c.Country}
               subtitle={state.updatedAt}
@@ -92,11 +109,18 @@ export default function TotalStatsCard({ state }: Props) {
           </Card>
         );
       })}
+      <BottomActionSheet ref={sheetRef} />
     </View>
   );
 }
 
 const s = StyleSheet.create({
+  backdrop: {
+    flex: 1,
+    zIndex: 999,
+    position: "absolute",
+    backgroundColor: "#000",
+  },
   cardContent: {
     textAlign: "center",
   },

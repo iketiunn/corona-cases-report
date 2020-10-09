@@ -54,19 +54,19 @@ export default function TotalStatsCard({ state }: Props) {
   const data = [
     {
       key: 1,
-      amount: state.summary.Global.TotalConfirmed.toLocaleString(),
+      amount: formatNumber(state.summary.Global.TotalConfirmed),
       name: "Confirmed",
       svg: { fill: bioColor },
     },
     {
       key: 2,
-      amount: state.summary.Global.TotalRecovered.toLocaleString(),
+      amount: formatNumber(state.summary.Global.TotalRecovered),
       name: "Recovered",
       svg: { fill: recoverColor },
     },
     {
       key: 3,
-      amount: state.summary.Global.TotalDeaths.toLocaleString(),
+      amount: formatNumber(state.summary.Global.TotalDeaths),
       name: "Death",
       svg: { fill: deathColor },
     },

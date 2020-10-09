@@ -6,7 +6,7 @@ interface Summary {
   Global: Global;
   Countries: Country[];
 }
-interface Country {
+export interface Country {
   Country: string;
   CountryCode: string;
   Slug: string;
@@ -32,10 +32,11 @@ const initialState: {
   updatedAt: string;
   isLoading: boolean;
   error: string
+  selectedCountry?: Country 
 } = {
   isLoading: false,
   updatedAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-  error: ''
+  error: '',
 };
 
 const globalSlice = createSlice({
@@ -55,12 +56,16 @@ const globalSlice = createSlice({
       state.error = action.payload
       state.isLoading = false
       state.updatedAt = dayjs().format('YYYY-MM-DD HH:mm:ss')
+    },
+    updateSelectedCountry: (state, action: PayloadAction<Country>) => {
+      state.selectedCountry = action.payload
     }
   },
 });
 export type State = typeof initialState
 
 export const selectState = (state: RootState) => state.global;
+export const { updateSelectedCountry } = globalSlice.actions
 
 export const fetchSummaryAsync = (dispatch: AppDispatch) => {
   dispatch(globalSlice.actions.updateSummary(undefined))

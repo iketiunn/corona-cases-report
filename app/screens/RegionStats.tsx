@@ -17,7 +17,7 @@ export default function TotalStatsScreen() {
   const dispatch = useDispatch();
   const state = useSelector(selectState);
   React.useEffect(() => {
-    dispatch(fetchSummaryAsync);
+    !state.summary && dispatch(fetchSummaryAsync);
   }, []);
 
   return (
@@ -66,7 +66,7 @@ export default function TotalStatsScreen() {
             </Text>
           </View>
         )}
-        {state.summary && <RegionStatsCards state={state} />}
+        {state.summary && <RegionStatsCards />}
       </ScrollView>
     </View>
   );
