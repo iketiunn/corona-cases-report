@@ -1,6 +1,5 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, View } from "react-native";
 import { Provider } from "react-redux";
 import store from "./app/store";
 import { Portal } from "react-native-paper";
@@ -16,12 +15,3 @@ export default function App() {
     </Provider>
   );
 }
-
-const s = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
