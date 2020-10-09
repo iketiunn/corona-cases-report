@@ -3,42 +3,38 @@ import { View, StyleSheet } from "react-native";
 import { Avatar, Card, Text } from "react-native-paper";
 import { PieChart } from "react-native-svg-charts";
 import { Text as SVGText } from "react-native-svg";
-import { formatNumber } from "../lib";
+import { colors, formatNumber } from "../lib";
 import { State } from "../store/global";
 
-const totalColor = "#4ba9c8";
 const Clip = (props: any) => (
   <Avatar.Icon
     {...props}
     icon="clipboard-text-outline"
-    color={totalColor}
+    color={colors.total}
     theme={{ colors: { primary: "transparent" } }}
   />
 );
-const bioColor = "#ff8280";
 const Bio = (props: any) => (
   <Avatar.Icon
     {...props}
     icon="biohazard"
-    color={bioColor}
+    color={colors.bio}
     theme={{ colors: { primary: "transparent" } }}
   />
 );
-const recoverColor = "#4bc86a";
 const Recover = (props: any) => (
   <Avatar.Icon
     {...props}
     icon="heart-pulse"
-    color={recoverColor}
+    color={colors.recover}
     theme={{ colors: { primary: "transparent" } }}
   />
 );
-const deathColor = "#939393";
 const Death = (props: any) => (
   <Avatar.Icon
     {...props}
     icon="skull"
-    color={deathColor}
+    color={colors.death}
     theme={{ colors: { primary: "transparent" } }}
   />
 );
@@ -56,19 +52,19 @@ export default function TotalStatsCard({ state }: Props) {
       key: 1,
       amount: formatNumber(state.summary.Global.TotalConfirmed),
       name: "Confirmed",
-      svg: { fill: bioColor },
+      svg: { fill: colors.bio },
     },
     {
       key: 2,
       amount: formatNumber(state.summary.Global.TotalRecovered),
       name: "Recovered",
-      svg: { fill: recoverColor },
+      svg: { fill: colors.recover },
     },
     {
       key: 3,
       amount: formatNumber(state.summary.Global.TotalDeaths),
       name: "Death",
-      svg: { fill: deathColor },
+      svg: { fill: colors.death },
     },
   ];
 
@@ -126,7 +122,7 @@ export default function TotalStatsCard({ state }: Props) {
           }}
           right={() => (
             <Card.Content style={{ justifyContent: "center" }}>
-              <Text style={{ color: totalColor }}>
+              <Text style={{ color: colors.total }}>
                 {formatNumber(
                   summary.Global.TotalConfirmed +
                     summary.Global.TotalRecovered +
@@ -153,7 +149,7 @@ export default function TotalStatsCard({ state }: Props) {
           }}
           right={() => (
             <Card.Content style={{ justifyContent: "center" }}>
-              <Text style={{ color: bioColor }}>
+              <Text style={{ color: colors.bio }}>
                 {formatNumber(summary.Global.TotalConfirmed)}
               </Text>
             </Card.Content>
@@ -176,7 +172,7 @@ export default function TotalStatsCard({ state }: Props) {
           }}
           right={() => (
             <Card.Content style={{ justifyContent: "center" }}>
-              <Text style={{ color: recoverColor }}>
+              <Text style={{ color: colors.recover }}>
                 {formatNumber(summary.Global.TotalRecovered)}
               </Text>
             </Card.Content>
@@ -199,7 +195,7 @@ export default function TotalStatsCard({ state }: Props) {
           }}
           right={() => (
             <Card.Content style={{ justifyContent: "center" }}>
-              <Text style={{ color: deathColor }}>
+              <Text style={{ color: colors.death }}>
                 {formatNumber(summary.Global.TotalDeaths)}
               </Text>
             </Card.Content>

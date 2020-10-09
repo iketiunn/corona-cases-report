@@ -3,7 +3,7 @@ import { View, Text, TouchableHighlight } from "react-native";
 import { IconButton, List, Portal, useTheme } from "react-native-paper";
 import { useSelector, useDispatch } from "react-redux";
 import BottomSheet from "reanimated-bottom-sheet";
-import { formatNumber } from "../lib";
+import { colors, formatNumber } from "../lib";
 import { selectState, updateIsBackdropVisible } from "../store/global";
 // @ts-ignore:
 import Flag from "react-native-flags";
@@ -50,10 +50,14 @@ const BottomActionSheet = (props: React.HTMLProps<BottomSheet>, ref: any) => {
       <List.Item
         title="Total Confirmed Cases"
         left={(pps) => (
-          <List.Icon {...pps} icon="clipboard-text-outline" color="#4ba9c8" />
+          <List.Icon
+            {...pps}
+            icon="clipboard-text-outline"
+            color={colors.total}
+          />
         )}
         right={() => (
-          <Text style={{ alignSelf: "center" }}>
+          <Text style={{ alignSelf: "center", color: colors.total }}>
             {formatNumber(
               Number(c?.TotalConfirmed) +
                 Number(c?.TotalRecovered) +
@@ -64,9 +68,11 @@ const BottomActionSheet = (props: React.HTMLProps<BottomSheet>, ref: any) => {
       />
       <List.Item
         title="Currently Infected"
-        left={(pps) => <List.Icon {...pps} icon="biohazard" color="#ff8280" />}
+        left={(pps) => (
+          <List.Icon {...pps} icon="biohazard" color={colors.bio} />
+        )}
         right={() => (
-          <Text style={{ alignSelf: "center" }}>
+          <Text style={{ alignSelf: "center", color: colors.bio }}>
             {formatNumber(c?.TotalConfirmed || 0)}
           </Text>
         )}
@@ -74,19 +80,19 @@ const BottomActionSheet = (props: React.HTMLProps<BottomSheet>, ref: any) => {
       <List.Item
         title="Recovered"
         left={(pps) => (
-          <List.Icon {...pps} icon="heart-pulse" color="#4bc86a" />
+          <List.Icon {...pps} icon="heart-pulse" color={colors.recover} />
         )}
         right={() => (
-          <Text style={{ alignSelf: "center" }}>
+          <Text style={{ alignSelf: "center", color: colors.recover }}>
             {formatNumber(c?.TotalRecovered || 0)}
           </Text>
         )}
       />
       <List.Item
         title="Deaths"
-        left={(pps) => <List.Icon {...pps} icon="skull" color="#939393" />}
+        left={(pps) => <List.Icon {...pps} icon="skull" color={colors.death} />}
         right={() => (
-          <Text style={{ alignSelf: "center" }}>
+          <Text style={{ alignSelf: "center", color: colors.death }}>
             {formatNumber(c?.TotalDeaths || 0)}
           </Text>
         )}

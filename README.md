@@ -1,6 +1,33 @@
-## Problem Statement: Corona Cases Report
+## Corona Cases Report
 
-Now that your body temperature report app is ready, it is time to show the current COVID-19 cases to the Allied Force. That is the first-hand report, which is very important for the decision of the Supreme Headquarters.
+#### Demo
+
+- `./demo.mp4`
+
+#### Run with expo
+
+- https://expo.io/@ike.chang/corona-cases-report
+
+#### Run locally
+
+##### Install
+
+```
+yarn global add expo-cli
+yarn
+```
+
+#### Run on ios
+
+```
+yarn ios
+```
+
+#### Run on android
+
+```
+yarn android
+```
 
 #### Technology Stack
 
