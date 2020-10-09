@@ -15,37 +15,38 @@ const BottomActionSheet = (props: React.HTMLProps<BottomSheet>, ref: any) => {
   const theme = useTheme();
   const c = state.selectedCountry;
 
+  const renderHeader = () => (
+    <List.Item
+      title={c?.Country}
+      titleStyle={{ fontSize: 20, fontWeight: "bold", color: "white" }}
+      style={{ backgroundColor: theme.colors.primary }}
+      left={() => (
+        <Flag
+          style={{ alignSelf: "center", marginHorizontal: 10 }}
+          code={c?.CountryCode}
+          size={24}
+        />
+      )}
+      right={(ps) => (
+        <IconButton
+          icon="close"
+          color="white"
+          size={22}
+          onPress={() => {
+            dispatchBackdropOff();
+            ref.current.snapTo(0);
+          }}
+        />
+      )}
+    />
+  );
   const renderContent = () => (
     <View
       style={{
         backgroundColor: "white",
-        padding: 16,
         height: 1200,
       }}
     >
-      <List.Item
-        title={c?.Country}
-        titleStyle={{ fontSize: 20, fontWeight: "bold", color: "white" }}
-        style={{ backgroundColor: theme.colors.primary }}
-        left={() => (
-          <Flag
-            style={{ alignSelf: "center", marginHorizontal: 10 }}
-            code={c?.CountryCode}
-            size={24}
-          />
-        )}
-        right={(ps) => (
-          <IconButton
-            icon="close"
-            color="white"
-            size={22}
-            onPress={() => {
-              dispatchBackdropOff();
-              ref.current.snapTo(0);
-            }}
-          />
-        )}
-      />
       <List.Item
         title="Total Confirmed Cases"
         left={(pps) => (
@@ -111,7 +112,8 @@ const BottomActionSheet = (props: React.HTMLProps<BottomSheet>, ref: any) => {
         ref={ref}
         snapPoints={[0, "40%"]}
         initialSnap={0}
-        borderRadius={10}
+        onCloseEnd={dispatchBackdropOff}
+        renderHeader={renderHeader}
         renderContent={renderContent}
       />
     </Portal>
