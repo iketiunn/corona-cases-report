@@ -68,7 +68,6 @@ export default function TotalStatsCard() {
             key={c.CountryCode}
             onPress={() => {
               dispatchSelectCountry(c);
-              console.log("shot");
               sheetRef?.current?.snapTo(1);
               console;
             }}

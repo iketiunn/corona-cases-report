@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { List, Portal, useTheme } from "react-native-paper";
+import { IconButton, List, Portal, useTheme } from "react-native-paper";
 import { useSelector } from "react-redux";
 import BottomSheet from "reanimated-bottom-sheet";
 import { formatNumber } from "../lib";
@@ -32,7 +32,17 @@ const BottomActionSheet = (props: React.HTMLProps<BottomSheet>, ref: any) => {
             size={24}
           />
         )}
-        right={(pps) => <List.Icon {...pps} icon="close" color="white" />}
+        right={(ps) => (
+          <IconButton
+            icon="close"
+            color="white"
+            size={22}
+            onPress={() => {
+              console.log("xx");
+              ref.current.snapTo(0);
+            }}
+          />
+        )}
       />
       <List.Item
         title="Total Confirmed Cases"
