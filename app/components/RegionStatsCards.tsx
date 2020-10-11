@@ -32,7 +32,7 @@ export default function TotalStatsCard() {
 
   const countries = state.summary.Countries;
 
-  const List = () => (
+  const List = React.memo(() => (
     <VirtualizedList
       data={countries}
       initialNumToRender={24}
@@ -94,7 +94,7 @@ export default function TotalStatsCard() {
       getItemCount={() => countries.length}
       getItem={(data, index) => data[index]}
     />
-  );
+  ));
 
   return (
     <>

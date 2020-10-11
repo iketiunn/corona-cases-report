@@ -1,47 +1,39 @@
 ## Corona Cases Report
 
-#### Demo
+A simple app fetch https://api.covid19api.com and display it for a challenge.
 
-- `./demo.mp4`
+#### Spec
 
-#### Run with expo
+- React Native/Expo
+- Typescript
+- Nodejs LTS (12.x)
+- Redux/Redux toolkit
 
-- https://expo.io/@ike.chang/corona-cases-report
+#### Screenshots
+
+![shoot1](./screenshots/1.png)
+![shoot2](./screenshots/2.png)
+[demo](./screenshots/demo.mp4)
+
+#### Run with expo client
+
+- [Android Client](https://play.google.com/store/apps/details?id=host.exp.exponent&referrer=www)
+- [iOS Client](https://itunes.apple.com/app/apple-store/id982107779)
+- [Project url](https://expo.io/@ike.chang/projects/corona-cases-report)
+
+#### Run with snack
+
+- TBD
 
 #### Run locally
 
-##### Install
-
 ```
+# Install
 yarn global add expo-cli
 yarn
-```
 
-#### Run on ios
-
-```
+# Run on ios
 yarn ios
-```
-
-#### Run on android
-
-```
+# Run on android
 yarn android
 ```
-
-#### Technology Stack
-
-- You can use either React Native CLI or Expo CLI.
-- The language must be Typescript
-- Use Nodejs LTS (12.x)
-- The suffix of the components should be .tsx
-
-#### What do you need to do?
-
-Now that your body temperature report app is ready, it is time to show the current COVID-19 cases to the Allied Force. That is the first-hand report, which is very important for the decision of the Supreme Headquarters.
-
-You need to develop a React native app to show the current COVID-19 cases with the following requirements:
-
-The data source of COVID should be from https://covid19api.com/, you can see the API details here in the Postman
-
-Full requirements: https://www.topcoder.com/challenges/fa0302f6-48b3-4fc8-a6ad-b371ef2ba88d
