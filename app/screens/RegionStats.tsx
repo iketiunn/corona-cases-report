@@ -1,11 +1,5 @@
 import * as React from "react";
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  RefreshControl,
-  ActivityIndicator,
-} from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { Text } from "react-native-paper";
 import HeaderNav from "../components/HeaderNav";
 import { fetchSummaryAsync, selectState } from "../store/global";
@@ -23,51 +17,38 @@ export default function TotalStatsScreen() {
   return (
     <View>
       <HeaderNav title="Region Stats" />
-      <ScrollView
-        refreshControl={
-          <RefreshControl
-            refreshing={state.isLoading}
-            onRefresh={() => {
-              dispatch(fetchSummaryAsync);
+      {state.isLoading && (
+        <View style={[s.container, s.horizontal]}>
+          <ActivityIndicator size="large" />
+        </View>
+      )}
+      {!state.isLoading && Boolean(state.error) && (
+        <View style={s.container}>
+          <Text
+            style={{
+              fontSize: 24,
+              paddingVertical: 128,
+              paddingHorizontal: 48,
             }}
-          />
-        }
-      >
-        {state.isLoading && (
-          <View style={[s.container, s.horizontal]}>
-            <ActivityIndicator size="large" />
-          </View>
-        )}
-        {!state.isLoading && Boolean(state.error) && (
-          <View style={s.container}>
-            <Text
-              style={{
-                fontSize: 24,
-                paddingVertical: 128,
-                paddingHorizontal: 48,
-              }}
-            >
-              {" "}
-              {state.error}{" "}
-            </Text>
-          </View>
-        )}
-        {!state.isLoading && !state.summary && !state.error && (
-          <View style={s.container}>
-            <Text
-              style={{
-                fontSize: 24,
-                paddingVertical: 128,
-                paddingHorizontal: 48,
-              }}
-            >
-              {" "}
-              No Data!{" "}
-            </Text>
-          </View>
-        )}
-        {state.summary && <RegionStatsCards />}
-      </ScrollView>
+          >
+            {state.error}
+          </Text>
+        </View>
+      )}
+      {!state.isLoading && !state.summary && !state.error && (
+        <View style={s.container}>
+          <Text
+            style={{
+              fontSize: 24,
+              paddingVertical: 128,
+              paddingHorizontal: 48,
+            }}
+          >
+            No Data!
+          </Text>
+        </View>
+      )}
+      {state.summary && <RegionStatsCards />}
     </View>
   );
 }

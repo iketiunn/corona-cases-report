@@ -27,7 +27,6 @@ export default function TotalStatsScreen() {
         refreshControl={
           <RefreshControl
             enabled={true}
-            progressViewOffset={-100}
             refreshing={state.isLoading}
             onRefresh={() => {
               dispatch(fetchSummaryAsync);

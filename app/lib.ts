@@ -8,3 +8,7 @@ export const colors = {
   recover: "#4bc86a",
   death: "#939393" 
 }
+
+export async function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(() => resolve(), ms))
+}

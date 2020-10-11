@@ -1,10 +1,16 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import { Avatar, Card, Text, IconButton } from "react-native-paper";
+import {
+  View,
+  StyleSheet,
+  VirtualizedList,
+  RefreshControl,
+} from "react-native";
+import { Card, Text, IconButton } from "react-native-paper";
 import BottomSheet from "reanimated-bottom-sheet";
 import { colors, formatNumber } from "../lib";
 import {
   Country,
+  fetchSummaryAsync,
   selectState,
   updateIsBackdropVisible,
   updateSelectedCountry,
@@ -24,62 +30,77 @@ export default function TotalStatsCard() {
 
   const sheetRef = React.useRef<BottomSheet>(null);
 
-  const countries = state.summary.Countries.slice().sort(
-    (a, b) => b.TotalConfirmed - a.TotalConfirmed
+  const countries = state.summary.Countries;
+
+  const List = () => (
+    <VirtualizedList
+      data={countries}
+      initialNumToRender={24}
+      refreshControl={
+        <RefreshControl
+          refreshing={state.isLoading}
+          onRefresh={() => {
+            dispatch(fetchSummaryAsync);
+          }}
+        />
+      }
+      renderItem={({ item: c }) => (
+        <Card
+          style={s.card}
+          key={c.CountryCode}
+          onPress={() => {
+            dispatchSelectCountry(c);
+            dispatchBackdrop();
+            sheetRef?.current?.snapTo(1);
+            console;
+          }}
+        >
+          <Card.Title
+            title={c.Country}
+            subtitle={state.updatedAt}
+            titleNumberOfLines={2}
+            subtitleNumberOfLines={2}
+            style={{
+              width: "100%",
+            }}
+            left={() => <Flag code={c.CountryCode} size={32} />}
+            rightStyle={{
+              width: "40%",
+            }}
+            right={() => (
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Card.Content style={{ marginRight: "auto" }}>
+                  <Text style={{ color: colors.total }}>
+                    {formatNumber(
+                      c.TotalConfirmed + c.TotalRecovered + c.TotalDeaths
+                    )}
+                  </Text>
+                </Card.Content>
+                <IconButton icon="chevron-down" />
+                <View />
+              </View>
+            )}
+          ></Card.Title>
+        </Card>
+      )}
+      keyExtractor={(item: Country) => item.CountryCode}
+      getItemCount={() => countries.length}
+      getItem={(data, index) => data[index]}
+    />
   );
 
   return (
-    <View>
-      {countries.map((c) => {
-        return (
-          <Card
-            style={s.card}
-            key={c.CountryCode}
-            onPress={() => {
-              dispatchSelectCountry(c);
-              dispatchBackdrop();
-              sheetRef?.current?.snapTo(1);
-              console;
-            }}
-          >
-            <Card.Title
-              title={c.Country}
-              subtitle={state.updatedAt}
-              titleNumberOfLines={2}
-              subtitleNumberOfLines={2}
-              style={{
-                width: "100%",
-              }}
-              left={() => <Flag code={c.CountryCode} size={32} />}
-              rightStyle={{
-                width: "40%",
-              }}
-              right={() => (
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <Card.Content style={{ marginRight: "auto" }}>
-                    <Text style={{ color: colors.total }}>
-                      {formatNumber(
-                        c.TotalConfirmed + c.TotalRecovered + c.TotalDeaths
-                      )}
-                    </Text>
-                  </Card.Content>
-                  <IconButton icon="chevron-down" />
-                  <View />
-                </View>
-              )}
-            ></Card.Title>
-          </Card>
-        );
-      })}
+    <>
+      <List />
       <BottomActionSheet ref={sheetRef} />
-    </View>
+    </>
   );
 }
 

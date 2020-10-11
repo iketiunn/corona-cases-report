@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
 import { AppDispatch, RootState } from ".";
+import { sleep } from "../lib";
 
 interface Summary {
   Global: Global;
@@ -49,7 +50,13 @@ const globalSlice = createSlice({
       state.isLoading = true
     },
     updateSummary: (state, action: PayloadAction<Summary | undefined>) => {
-      state.summary = action.payload;
+      if (action.payload) {
+        state.summary = action.payload;
+        // Sort countries
+        state.summary.Countries = action.payload.Countries.slice().sort(
+          (a, b) => b.TotalConfirmed - a.TotalConfirmed
+        )
+      }
       state.isLoading = false
       state.updatedAt = dayjs().format('YYYY-MM-DD HH:mm:ss')
     },
@@ -79,6 +86,11 @@ export const fetchSummaryAsync = (dispatch: AppDispatch) => {
   Promise.race([
     fetch('https://api.covid19api.com/summary')
     .then(res => res.json())
+    .then(async json => {
+      // Mock network delay
+      await sleep(3000)
+      return json
+    }) 
     .then(sum => {
       // sum = {
       //   "Date": "0001-01-01T00:00:00Z",
