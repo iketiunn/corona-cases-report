@@ -118,6 +118,7 @@ const BottomActionSheet = (props: React.HTMLProps<BottomSheet>, ref: any) => {
         ref={ref}
         snapPoints={[0, "40%"]}
         initialSnap={0}
+        enabledGestureInteraction={false}
         onCloseEnd={dispatchBackdropOff}
         renderHeader={renderHeader}
         renderContent={renderContent}
