@@ -14,6 +14,7 @@ import {
   selectState,
   updateIsBackdropVisible,
   updateSelectedCountry,
+  updateSummary,
 } from "../store/global";
 // @ts-ignore:
 import Flag from "react-native-flags";
@@ -40,6 +41,7 @@ export default function TotalStatsCard() {
         <RefreshControl
           refreshing={state.isLoading}
           onRefresh={() => {
+            dispatch(updateSummary());
             dispatch(fetchSummaryAsync);
           }}
         />
@@ -78,9 +80,7 @@ export default function TotalStatsCard() {
               >
                 <Card.Content style={{ marginRight: "auto" }}>
                   <Text style={{ color: colors.total }}>
-                    {formatNumber(
-                      c.TotalConfirmed + c.TotalRecovered + c.TotalDeaths
-                    )}
+                    {formatNumber(c.TotalConfirmed)}
                   </Text>
                 </Card.Content>
                 <IconButton icon="chevron-down" />

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Text } from "react-native-paper";
 import HeaderNav from "../components/HeaderNav";
-import { fetchSummaryAsync, selectState } from "../store/global";
+import { fetchSummaryAsync, selectState, updateSummary } from "../store/global";
 import { useDispatch, useSelector } from "react-redux";
 import TotalStatsCard from "../components/TotalStatsCards";
 
@@ -29,6 +29,7 @@ export default function TotalStatsScreen() {
             enabled={true}
             refreshing={state.isLoading}
             onRefresh={() => {
+              dispatch(updateSummary());
               dispatch(fetchSummaryAsync);
             }}
           />

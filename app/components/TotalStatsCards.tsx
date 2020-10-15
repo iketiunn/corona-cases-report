@@ -50,8 +50,12 @@ export default function TotalStatsCard({ state }: Props) {
   const data = [
     {
       key: 1,
-      amount: formatNumber(state.summary.Global.TotalConfirmed),
-      name: "Confirmed",
+      amount: formatNumber(
+        summary.Global.TotalConfirmed -
+          summary.Global.TotalRecovered -
+          summary.Global.TotalDeaths
+      ),
+      name: "Current Infected",
       svg: { fill: colors.bio },
     },
     {
@@ -123,11 +127,7 @@ export default function TotalStatsCard({ state }: Props) {
           right={() => (
             <Card.Content style={{ justifyContent: "center" }}>
               <Text style={{ color: colors.total }}>
-                {formatNumber(
-                  summary.Global.TotalConfirmed +
-                    summary.Global.TotalRecovered +
-                    summary.Global.TotalDeaths
-                )}
+                {formatNumber(summary.Global.TotalConfirmed)}
               </Text>
             </Card.Content>
           )}
@@ -150,7 +150,11 @@ export default function TotalStatsCard({ state }: Props) {
           right={() => (
             <Card.Content style={{ justifyContent: "center" }}>
               <Text style={{ color: colors.bio }}>
-                {formatNumber(summary.Global.TotalConfirmed)}
+                {formatNumber(
+                  summary.Global.TotalConfirmed -
+                    summary.Global.TotalRecovered -
+                    summary.Global.TotalDeaths
+                )}
               </Text>
             </Card.Content>
           )}

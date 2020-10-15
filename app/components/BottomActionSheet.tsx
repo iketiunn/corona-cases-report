@@ -58,11 +58,7 @@ const BottomActionSheet = (props: React.HTMLProps<BottomSheet>, ref: any) => {
         )}
         right={() => (
           <Text style={{ alignSelf: "center", color: colors.total }}>
-            {formatNumber(
-              Number(c?.TotalConfirmed) +
-                Number(c?.TotalRecovered) +
-                Number(c?.TotalDeaths)
-            )}
+            {formatNumber(Number(c?.TotalConfirmed))}
           </Text>
         )}
       />
@@ -73,7 +69,11 @@ const BottomActionSheet = (props: React.HTMLProps<BottomSheet>, ref: any) => {
         )}
         right={() => (
           <Text style={{ alignSelf: "center", color: colors.bio }}>
-            {formatNumber(c?.TotalConfirmed || 0)}
+            {formatNumber(
+              Number(c?.TotalConfirmed) -
+                Number(c?.TotalRecovered) -
+                Number(c?.TotalDeaths) || 0
+            )}
           </Text>
         )}
       />
