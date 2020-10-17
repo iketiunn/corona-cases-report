@@ -1,10 +1,16 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import globalReducer from "./global";
 
 const store = configureStore({
   reducer: {
     global: globalReducer,
   },
+  middleware: [
+    ...getDefaultMiddleware({
+      immutableCheck: false,
+      serializableCheck: false,
+    }),
+  ],
   devTools: true,
 });
 export default store;
